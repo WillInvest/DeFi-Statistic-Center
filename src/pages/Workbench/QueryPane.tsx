@@ -10,6 +10,13 @@ import {
   type Schema,
 } from '../../lib/schema';
 import { nlToQuery, type NlResult } from '../../lib/nl';
+import { getSchemaGuide } from './schemaGuide';
+import { SqlEditor } from './sql/SqlEditor';
+import { formatSQL } from './sql/format';
+
+function prettyTableName(raw: string): string {
+  return raw.replace(/_events$/, '');
+}
 
 type QueryPaneProps = {
   schemas: Schema[];
@@ -185,11 +192,11 @@ function BuilderForm({
       }}
     >
       <div className="builder__grid">
-        {/* Source */}
-        <Eyebrow>Source</Eyebrow>
+        {/* Protocol */}
+        <Eyebrow>Protocol</Eyebrow>
         <div className="builder__row">
           <select
-            className="select"
+            className="select select--data"
             value={query.schema}
             onChange={(e) => {
               const s = e.target.value;
@@ -198,17 +205,21 @@ function BuilderForm({
             }}
           >
             {schemas.map((s) => (
-              <option key={s.name} value={s.name}>{s.name}</option>
+              <option key={s.name} value={s.name}>{getSchemaGuide(s.name).displayName}</option>
             ))}
           </select>
-          <span className="builder__sep">·</span>
+        </div>
+
+        {/* Events */}
+        <Eyebrow>Events</Eyebrow>
+        <div className="builder__row">
           <select
-            className="select"
+            className="select select--data"
             value={query.table}
             onChange={(e) => onSchemaTable(query.schema, e.target.value)}
           >
             {tablesInSchema.map((t) => (
-              <option key={t.name} value={t.name}>{t.name}</option>
+              <option key={t.name} value={t.name}>{prettyTableName(t.name)}</option>
             ))}
           </select>
         </div>
@@ -219,9 +230,6 @@ function BuilderForm({
           className="builder__chips"
           ref={(el) => { if (pickerOpen === 'select') pickerRef.current = el; }}
         >
-          {query.selectColumns.length === 0 && (
-            <span className="builder__empty">(all columns)</span>
-          )}
           {query.selectColumns.map((c) => (
             <Chip key={c} label={c} onRemove={() => onSelectChange(c, false)} accent="gold" />
           ))}
@@ -239,8 +247,22 @@ function BuilderForm({
             </button>
             {pickerOpen === 'select' && availableForSelect.length > 0 && (
               <Picker
-                items={availableForSelect.map((c) => ({ value: c.name, hint: c.type }))}
-                onPick={(v) => { onSelectChange(v, true); setPickerOpen(null); }}
+                items={[
+                  {
+                    value: '__ALL__',
+                    label: 'All columns',
+                    hint: `${availableForSelect.length}`,
+                  },
+                  ...availableForSelect.map((c) => ({ value: c.name, hint: c.type })),
+                ]}
+                onPick={(v) => {
+                  if (v === '__ALL__') {
+                    for (const c of availableForSelect) onSelectChange(c.name, true);
+                  } else {
+                    onSelectChange(v, true);
+                  }
+                  setPickerOpen(null);
+                }}
               />
             )}
           </div>
@@ -249,9 +271,6 @@ function BuilderForm({
         {/* Where */}
         <Eyebrow>Where</Eyebrow>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {query.filters.length === 0 && (
-            <span className="builder__empty">No filters.</span>
-          )}
           {query.filters.map((f) => (
             <div key={f.id} className="builder__row" style={{ flexWrap: 'wrap' }}>
               <select
@@ -303,9 +322,6 @@ function BuilderForm({
           className="builder__chips"
           ref={(el) => { if (pickerOpen === 'group') pickerRef.current = el; }}
         >
-          {query.groupBy.length === 0 && (
-            <span className="builder__empty">None.</span>
-          )}
           {query.groupBy.map((c) => (
             <Chip key={c} label={c} onRemove={() => removeGroupBy(c)} accent="charcoal" />
           ))}
@@ -333,9 +349,6 @@ function BuilderForm({
         {/* Order by */}
         <Eyebrow>Order by</Eyebrow>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          {query.orderBy.length === 0 && (
-            <span className="builder__empty">None.</span>
-          )}
           {query.orderBy.map((o) => {
             const used = new Set(query.orderBy.map((x) => x.column).filter((c) => c !== o.column));
             const options = selectableForGroup.filter((c) => !used.has(c));
@@ -420,12 +433,22 @@ function Chip({ label, onRemove, accent }: { label: string; onRemove: () => void
   );
 }
 
-function Picker({ items, onPick }: { items: { value: string; hint?: string }[]; onPick: (v: string) => void }) {
+function Picker({
+  items,
+  onPick,
+}: {
+  items: { value: string; label?: string; hint?: string }[];
+  onPick: (v: string) => void;
+}) {
   return (
     <div className="picker" onClick={(e) => e.stopPropagation()}>
       {items.map((it) => (
-        <div key={it.value} onClick={() => onPick(it.value)} className="picker__item">
-          <span>{it.value}</span>
+        <div
+          key={it.value}
+          onClick={() => onPick(it.value)}
+          className={`picker__item${it.value === '__ALL__' ? ' picker__item--all' : ''}`}
+        >
+          <span>{it.label ?? it.value}</span>
           {it.hint && <span className="picker__hint">{it.hint}</span>}
         </div>
       ))}
@@ -479,7 +502,7 @@ function NlChat({ onRunSql }: { onRunSql?: (sql: string) => void }) {
       if ('error' in result) {
         setMessages((prev) => [...prev, { role: 'assistant', text: result.error }]);
       } else {
-        setMessages((prev) => [...prev, { role: 'assistant', text: '', sql: result.sql }]);
+        setMessages((prev) => [...prev, { role: 'assistant', text: '', sql: formatSQL(result.sql) }]);
       }
     } catch (e) {
       setMessages((prev) => [...prev, { role: 'assistant', text: String(e) }]);
@@ -525,7 +548,15 @@ function NlChat({ onRunSql }: { onRunSql?: (sql: string) => void }) {
                   {m.text && <span>{m.text}</span>}
                   {m.sql && (
                     <div className="nl-chat__sql-wrap">
-                      <pre className="nl-chat__sql">{m.sql}</pre>
+                      <SqlEditor
+                        value={m.sql}
+                        onChange={(next) =>
+                          setMessages((prev) =>
+                            prev.map((mm, j) => (j === i ? { ...mm, sql: next } : mm))
+                          )
+                        }
+                        onRun={() => void runSql(m.sql!, i)}
+                      />
                       <button
                         className="btn btn-run btn-sm nl-chat__run-btn"
                         onClick={() => void runSql(m.sql!, i)}

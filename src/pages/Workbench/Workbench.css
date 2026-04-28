@@ -379,6 +379,17 @@
   background: #F2F2F3;
 }
 .picker__item:last-child { border-bottom: none; }
+.picker__item--all {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--stevens-maroon);
+  background: var(--maroon-08);
+}
+.picker__item--all:hover {
+  background: var(--maroon-18);
+}
 .picker__hint {
   color: var(--fg-on-light-muted);
   font-size: 11px;
@@ -441,6 +452,14 @@
   background: var(--white);
   color: var(--charcoal);
   border: 1px solid var(--border-on-light);
+  overflow: hidden;
+  padding: 0;
+}
+.nl-chat__msg--assistant > * {
+  padding: 6px 10px;
+}
+.nl-chat__msg--assistant > .nl-chat__sql-wrap {
+  padding: 0;
 }
 .nl-chat__hint {
   font-family: var(--font-body);
@@ -451,29 +470,67 @@
   padding: 4px 0;
 }
 .nl-chat__sql-wrap {
-  margin-top: 4px;
   position: relative;
+  border-top: 1px solid var(--border-on-light);
+  background: #F2F2F1;
 }
-.nl-chat__sql {
+.sql-editor {
+  position: relative;
   margin: 0;
-  padding: 8px 8px 30px;
-  background: var(--editor-bg);
+  background: transparent;
+  border: 0;
+  border-left: 3px solid var(--stevens-maroon);
+  border-radius: 0;
   font-family: var(--font-mono);
-  font-size: 11px;
-  line-height: 1.5;
-  color: var(--off-white);
-  white-space: pre-wrap;
-  word-break: break-word;
-  overflow-x: auto;
-  border-radius: 3px;
+  font-size: 12px;
+  line-height: 18px;
+  tab-size: 2;
 }
+.sql-editor__highlight,
+.sql-editor__textarea {
+  margin: 0;
+  padding: 8px 56px 8px 10px;
+  font: inherit;
+  white-space: pre;
+  tab-size: 2;
+}
+.sql-editor__highlight {
+  display: block;
+  color: var(--charcoal);
+  pointer-events: none;
+  overflow-x: auto;
+  min-height: 1em;
+}
+.sql-editor__textarea {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--charcoal);
+  resize: none;
+  outline: none;
+  overflow: auto;
+}
+.sql-editor__textarea::selection {
+  background: rgba(163, 38, 56, 0.18);
+}
+.sql-editor .tok-kw      { color: var(--stevens-maroon); font-weight: 600; }
+.sql-editor .tok-fn      { color: #2A4D8F; }
+.sql-editor .tok-str     { color: #1B6F4A; }
+.sql-editor .tok-num     { color: #B8651D; }
+.sql-editor .tok-ident   { color: var(--charcoal); }
+.sql-editor .tok-comment { color: #6B7280; font-style: italic; }
 .nl-chat__run-btn {
   position: absolute;
-  bottom: 4px;
+  top: 4px;
   right: 4px;
   font-size: 10px;
   padding: 2px 10px;
   min-width: unset;
+  z-index: 2;
 }
 .nl-chat__thinking {
   color: var(--fg-muted);
@@ -712,6 +769,18 @@
 .nl-chat .input:focus {
   outline: none;
   border-color: var(--stevens-maroon);
+}
+
+/* Data identifiers (Protocol / Events / column pickers) read better in
+   the condensed display face than in the body serif — underscores and
+   versioned names (e.g. "Aave V2", "Uniswap V3") line up cleanly. */
+.query-pane .select.select--data {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  height: 30px;
+  min-width: 200px;
 }
 .schema-tree .btn-ghost,
 .query-pane .btn-ghost {
