@@ -1,5 +1,5 @@
-function BrandStrip({ activeNav = 'Workbench', block = '19,482,901' }) {
-  const items = ['Workbench', 'Mempool', 'Saved', 'Docs'];
+function BrandStrip({ activeNav = 'Query', block = '19,482,901' }) {
+  const items = ['Query', 'Mempool', 'Saved', 'Docs'];
   return (
     <div style={{ height: 56, background: '#A32638', color: '#FFFFFF',
                   display: 'flex', alignItems: 'center', padding: '0 20px', gap: 20,

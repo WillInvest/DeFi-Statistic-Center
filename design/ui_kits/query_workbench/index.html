@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>DSC · Query Workbench</title>
+<title>DSC · Query</title>
 <link rel="stylesheet" href="../../colors_and_type.css">
 <style>
   html, body, #root { height: 100%; margin: 0; }
@@ -29,10 +29,10 @@ function App() {
   const [view, setView] = React.useState('Table');
 
   return (
-    <div data-screen-label="Query Workbench"
+    <div data-screen-label="Query"
          style={{ display: 'grid', gridTemplateRows: '56px 1fr 28px', height: '100vh',
                   background: '#1E2329', color: '#E4E5E6' }}>
-      <BrandStrip activeNav="Workbench" />
+      <BrandStrip activeNav="Query" />
       <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr 1fr', minHeight: 0 }}>
         <SchemaTree selected={selectedTable} onSelect={setSelectedTable} />
         <QueryPane activeMode={mode} onModeChange={setMode} onRun={() => {}} />
