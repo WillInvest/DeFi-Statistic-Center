@@ -1,19 +1,21 @@
-<div align="center">
+<p align="center">
+  <img src="./public/dsc-coin.png" alt="DSC Coin" width="120" />
+</p>
 
-<img src="./public/dsc-coin.png" alt="DSC Coin" width="120" />
+<h1 align="center">DeFi Statistics Center</h1>
 
-# DeFi Statistics Center
+<p align="center"><strong>An open data workbench for the programmable economy.</strong></p>
 
-**An open data workbench for the programmable economy.**
+<p align="center">
+  Ask in plain English. Get runnable SQL over <strong>8 DeFi protocols + Ethereum chain state</strong>, surfaced as 12 live schemas in one workbench.
+</p>
 
-Ask in plain English. Get runnable SQL over **8 DeFi protocols + Ethereum chain state**, surfaced as 12 live schemas in one workbench.
-
-[![Stevens Institute of Technology](https://img.shields.io/badge/Stevens-Institute%20of%20Technology-A32638?style=flat-square)](https://www.stevens.edu)
-[![Built with React 19](https://img.shields.io/badge/React-19-363D45?style=flat-square&logo=react&logoColor=61DAFB)](https://react.dev)
-[![Vite 8](https://img.shields.io/badge/Vite-8-363D45?style=flat-square&logo=vite&logoColor=646CFF)](https://vitejs.dev)
-[![Postgres](https://img.shields.io/badge/Postgres-Warehouse-A32638?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org)
-
-</div>
+<p align="center">
+  <a href="https://www.stevens.edu"><img src="https://img.shields.io/badge/Stevens-Institute%20of%20Technology-A32638?style=flat-square" alt="Stevens Institute of Technology"></a>
+  <a href="https://react.dev"><img src="https://img.shields.io/badge/React-19-363D45?style=flat-square&logo=react&logoColor=61DAFB" alt="React 19"></a>
+  <a href="https://vitejs.dev"><img src="https://img.shields.io/badge/Vite-8-363D45?style=flat-square&logo=vite&logoColor=646CFF" alt="Vite 8"></a>
+  <a href="https://www.postgresql.org"><img src="https://img.shields.io/badge/Postgres-Warehouse-A32638?style=flat-square&logo=postgresql&logoColor=white" alt="Postgres warehouse"></a>
+</p>
 
 ---
 
@@ -29,7 +31,7 @@ The **Agent Query** pane collapses that into a sentence:
 > what is the top most block with most swaps
 ```
 
-The agent reads the **full live schema** of every protocol, picks the right tables, writes a UNION across them, and hands you a **runnable, syntax-highlighted, editable SQL block** (using the schemas exposed in [`src/lib/schema.ts`](./src/lib/schema.ts)):
+The agent reads the **full live schema** of every protocol, picks the right tables, writes a UNION across them, and hands you a **runnable, syntax-highlighted, editable SQL block**. Below is an illustrative shape — table names follow the live Postgres warehouse at runtime; the column names mirror the offline fallback in [`src/lib/schema.ts`](./src/lib/schema.ts):
 
 ```sql
 SELECT
@@ -51,11 +53,7 @@ Click **Run ▶** — get answers, not boilerplate.
 
 This is what we mean by a *programmable economy*: the on-chain ledger is already a database. We're just giving researchers, students, and traders a query layer that **speaks their language**.
 
-<div align="center">
-
-<sub>▶ <strong><a href="./public/demo-agentic-query.mp4">Watch the agent build this query in real time (MP4 demo, 1 min)</a></strong></sub>
-
-</div>
+<p align="center"><sub>▶ <strong><a href="./public/demo-agentic-query.mp4">Watch the agent build this query in real time (MP4 demo, 1 min)</a></strong></sub></p>
 
 ---
 
@@ -76,28 +74,17 @@ This is what we mean by a *programmable economy*: the on-chain ledger is already
 
 ## ✦ Three panes, one workbench
 
-<table>
-<tr>
-<td width="33%" valign="top">
-
 ### 🌳 Schema Tree
+
 Browse all 12 schemas by category. Click a table to see column names, types, and human-readable descriptions sourced from the protocol's own docs. No more guessing whether `amount0In` is wei or scaled.
 
-</td>
-<td width="33%" valign="top">
-
 ### ✏️ Query Builder
+
 Visual SOURCE → SELECT → WHERE → GROUP BY → ORDER BY composer for users who'd rather click than type. Generates the same SQL the Agent does.
 
-</td>
-<td width="33%" valign="top">
-
 ### 🤖 Agent Query
-Plain-English in, runnable SQL out. The agent has the **full schema in context** so it never hallucinates a column. Keeps multi-turn history so you can refine: *"now group by hour"*, *"only WETH pools"*.
 
-</td>
-</tr>
-</table>
+Plain-English in, runnable SQL out. The agent has the **full schema in context** so it never hallucinates a column. Keeps multi-turn history so you can refine: *"now group by hour"*, *"only WETH pools"*.
 
 ---
 
@@ -182,24 +169,25 @@ pnpm lint        # ESLint pass
 
 ## ✦ Built at Stevens
 
-<div align="center">
+<p align="center">
+  <img src="./public/stevens-flag.svg" alt="Stevens Institute of Technology" width="80" />
+</p>
 
-<img src="./public/stevens-flag.svg" alt="Stevens Institute of Technology" width="80" />
+<p align="center">
+  This project is part of an ongoing program at the
+  <a href="https://www.stevens.edu"><strong>Stevens Institute of Technology</strong></a>
+  Financial Systems Lab on
+  <strong>on-chain market microstructure and programmable-economy research</strong>.
+</p>
 
-This project is part of an ongoing program at the
-**[Stevens Institute of Technology](https://www.stevens.edu)** Financial Systems Lab
-on **on-chain market microstructure and programmable-economy research**.
-
-PRs and issues welcome.
-
-</div>
+<p align="center">PRs and issues welcome.</p>
 
 ---
 
-<div align="center">
+<p align="center">
+  <strong>Stevens Maroon</strong> <code>#A32638</code> ·
+  <strong>Charcoal</strong> <code>#363D45</code> ·
+  <strong>Gold</strong> <code>#EBC73B</code>
+</p>
 
-**Stevens Maroon** `#A32638` · **Charcoal** `#363D45` · **Gold** `#EBC73B`
-
-<sub>© 2026 Stevens Institute of Technology Financial Systems Lab</sub>
-
-</div>
+<p align="center"><sub>© 2026 Stevens Institute of Technology Financial Systems Lab</sub></p>
