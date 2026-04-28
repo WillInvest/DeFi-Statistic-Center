@@ -53,7 +53,7 @@ Click **Run ▶** — get answers, not boilerplate.
 
 This is what we mean by a *programmable economy*: the on-chain ledger is already a database. We're just giving researchers, students, and traders a query layer that **speaks their language**.
 
-<p align="center"><sub>▶ <strong><a href="./public/demo-agentic-query.mp4">Watch the agent build this query in real time (MP4 demo, 1 min)</a></strong></sub></p>
+<p align="center"><sub>▶ <strong><a href="./public/demo-agentic-query.mp4">Watch the agent build this query in real time (MP4 demo, ~40 s)</a></strong></sub></p>
 
 ---
 
@@ -66,7 +66,7 @@ This is what we mean by a *programmable economy*: the on-chain ledger is already
 | 💱 Exchanges       | **Uniswap V3** · **Curve** · **Balancer V2**                  |
 | 🏦 Lending         | **Aave V2** · **Aave V3** · **Compound V3** · **Morpho** · **Spark** |
 | ⚙️  Infrastructure | **Ethereum** (blocks · txs · logs) · **Bridges** · **Tokens** |
-| 🏛️ DSC native      | curated cross-protocol views                                  |
+| 🏛️ DSC native      | curated cross-protocol views (also classified under Infrastructure) |
 
 > Every table is *event-level* — pool creations, swaps, deposits, borrows, liquidations, bridge transfers — joined back to the canonical Ethereum block stream. That means **provable, replayable, time-travel queries** down to the transaction.
 
@@ -76,7 +76,7 @@ This is what we mean by a *programmable economy*: the on-chain ledger is already
 
 ### 🌳 Schema Tree
 
-Browse all 12 schemas by category. Click a table to see column names, types, and human-readable descriptions sourced from the protocol's own docs. No more guessing whether `amount0In` is wei or scaled.
+Browse all 12 schemas by category. Click a table to see column names, types, and a one-line plain-English description for every schema and table (curated in [`schemaGuide.ts`](./src/pages/Workbench/schemaGuide.ts)). No more guessing what each table is for.
 
 ### ✏️ Query Builder
 
