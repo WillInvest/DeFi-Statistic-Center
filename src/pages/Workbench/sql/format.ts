@@ -40,7 +40,10 @@ function maskLiterals(sql: string): Mask {
       // surrounding whitespace normalization.
       const nl = sql.indexOf("\n", i);
       const end = nl < 0 ? sql.length : nl;
-      const body = sql.slice(i + 2, end).trim();
+      // Neutralize any `*/` inside the line-comment body before wrapping, so
+      // the synthesized block comment does not close prematurely. Replacing
+      // with `* /` keeps the text readable; the comment stays a comment.
+      const body = sql.slice(i + 2, end).trim().replace(/\*\//g, "* /");
       masked += emit(literals, "/* " + body + " */");
       i = end;
       continue;
