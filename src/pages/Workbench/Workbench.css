@@ -321,12 +321,22 @@
 }
 .builder__sep { color: var(--fg-on-light-muted); }
 
-/* Column / group chips */
+/* Column / group chips — light theme tags. Override the dark default
+   from .badge-gold / .badge-gray (tokens.css). */
 .chip {
   display: inline-flex;
   gap: 6px;
   align-items: center;
-  background: var(--editor-bg);
+}
+.chip.badge-gold {
+  background: var(--gold-20);
+  color: var(--charcoal);
+  border: 1px solid var(--stevens-gold);
+}
+.chip.badge-gray {
+  background: var(--white);
+  color: var(--charcoal);
+  border: 1px solid var(--border-on-light);
 }
 .chip__remove {
   background: transparent;
