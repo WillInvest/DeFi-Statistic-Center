@@ -23,7 +23,7 @@ export function SqlEditor({ value, onChange, onRun }: Props) {
         spellCheck={false}
         autoCorrect="off"
         autoCapitalize="off"
-        wrap="off"
+        wrap="soft"
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => {
           if (e.key === "Tab") {

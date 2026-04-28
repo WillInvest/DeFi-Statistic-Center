@@ -557,12 +557,14 @@ function NlChat({ onRunSql }: { onRunSql?: (sql: string) => void }) {
                         }
                         onRun={() => void runSql(m.sql!, i)}
                       />
-                      <button
-                        className="btn btn-run btn-sm nl-chat__run-btn"
-                        onClick={() => void runSql(m.sql!, i)}
-                      >
-                        Run ▶
-                      </button>
+                      <div className="sql-editor__footer">
+                        <button
+                          className="btn btn-run btn-sm nl-chat__run-btn"
+                          onClick={() => void runSql(m.sql!, i)}
+                        >
+                          Run ▶
+                        </button>
+                      </div>
                     </div>
                   )}
                 </>
