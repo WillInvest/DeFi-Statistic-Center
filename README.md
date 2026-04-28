@@ -65,10 +65,10 @@ This is what we mean by a *programmable economy*: the on-chain ledger is already
 | ----------------- | ------------------------------------------------------------- |
 | 💱 Exchanges       | **Uniswap V3** · **Curve** · **Balancer V2**                  |
 | 🏦 Lending         | **Aave V2** · **Aave V3** · **Compound V3** · **Morpho** · **Spark** |
-| ⚙️  Infrastructure | **Ethereum** (blocks · txs · logs) · **Bridges** · **Tokens** |
+| ⚙️  Infrastructure | **Ethereum** (blocks · transactions · logs · contracts) · **Bridges** · **Tokens** |
 | 🏛️ DSC native      | curated cross-protocol views (also classified under Infrastructure) |
 
-> Every table is *event-level* — pool creations, swaps, deposits, borrows, liquidations, bridge transfers — joined back to the canonical Ethereum block stream. That means **provable, replayable, time-travel queries** down to the transaction.
+> Most tables are *event-level* — swaps, deposits, borrows, liquidations, bridge transfers — joined back to the canonical Ethereum block stream. State tables (pools, positions, token metadata, blocks, contracts) round out the schema for context. Either way: **provable, replayable, time-travel queries** down to the transaction.
 
 ---
 
