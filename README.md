@@ -59,7 +59,7 @@ This is what we mean by a *programmable economy*: the on-chain ledger is already
 
 ## ✦ What's covered
 
-**12 schemas — 8 DeFi protocols + 4 infrastructure / native datasets — over 30 indexed tables**, served from a Postgres warehouse on the Stevens campus. See [`src/pages/Workbench/schemaGuide.ts`](./src/pages/Workbench/schemaGuide.ts) for the canonical list.
+**12 schemas — 8 DeFi protocols + 4 infrastructure / native datasets**, served from a Postgres warehouse on the Stevens campus. The canonical schema list lives in [`src/pages/Workbench/schemaGuide.ts`](./src/pages/Workbench/schemaGuide.ts); the offline fallback shape (table + column names) is in [`src/lib/schema.ts`](./src/lib/schema.ts).
 
 | Category          | Schemas                                                       |
 | ----------------- | ------------------------------------------------------------- |
@@ -76,7 +76,7 @@ This is what we mean by a *programmable economy*: the on-chain ledger is already
 
 ### 🌳 Schema Tree
 
-Browse all 12 schemas by category. Click a table to see column names, types, and a one-line plain-English description for every schema and table (curated in [`schemaGuide.ts`](./src/pages/Workbench/schemaGuide.ts)). No more guessing what each table is for.
+Browse all 12 schemas by category. Column names + types come from `/api/schema` at runtime (or [`src/lib/schema.ts`](./src/lib/schema.ts) as the offline fallback shape). Each schema and table also gets a hand-curated one-line description from [`schemaGuide.ts`](./src/pages/Workbench/schemaGuide.ts) so you can tell at a glance what's in there.
 
 ### ✏️ Query Builder
 
@@ -118,7 +118,7 @@ The same workbench that lets a finance student ask *"show me the biggest WETH/US
                                   │ Postgres protocol
                      ┌────────────┴─────────────────────────┐
                      │  Postgres @ fscresearchvm89          │
-                     │  12 schemas · 30+ indexed tables     │
+                     │  12 schemas of decoded event data    │
                      └────────────┬─────────────────────────┘
                                   │  reth+lighthouse
                      ┌────────────┴─────────────────────────┐
