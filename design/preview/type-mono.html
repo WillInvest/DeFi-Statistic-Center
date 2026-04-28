@@ -1,0 +1,14 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Mono / numeric</title><link rel="stylesheet" href="_base.css"></head>
+<body><div class="card" style="background:#1E2329;">
+  <div style="font-family:var(--font-mono); font-size:13px; line-height:1.65; color:#E4E5E6;">
+    <div><span style="color:#E25A6E; font-weight:600;">SELECT</span> block_number, <span style="color:#E25A6E; font-weight:600;">SUM</span>(amount_usd) <span style="color:#E25A6E; font-weight:600;">AS</span> vol</div>
+    <div><span style="color:#E25A6E; font-weight:600;">FROM</span>   uniswap_v3.swaps</div>
+    <div><span style="color:#E25A6E; font-weight:600;">WHERE</span>  pool = <span style="color:#EBC73B;">'0x88e6...5640'</span>  <span style="color:#949594;">-- USDC/WETH 0.05%</span></div>
+    <div><span style="color:#E25A6E; font-weight:600;">GROUP BY</span> 1 <span style="color:#E25A6E; font-weight:600;">ORDER BY</span> 1 <span style="color:#E25A6E; font-weight:600;">DESC</span></div>
+  </div>
+  <div style="margin-top:14px; font-family:var(--font-mono); font-size:13px; color:#E4E5E6; font-variant-numeric:tabular-nums;">
+    0x4a2c8e91…f81e   ·   0.0421 ETH   ·   28 gwei   ·   1,284,902
+  </div>
+  <div style="margin-top:10px; font-family:var(--font-mono); font-size:11px; color:#949594;">JetBrains Mono · 400/600 · 13 / 21 · tabular-nums for figures</div>
+  <div style="margin-top:4px; font-family:var(--font-mono); font-size:11px; color:#949594;">Keyword color: #E25A6E (maroon-tint for AA contrast on #1E2329) · String: #EBC73B · Comment: #949594</div>
+</div></body></html>

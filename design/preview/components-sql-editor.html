@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><title>SQL editor</title><link rel="stylesheet" href="_base.css"></head>
+<body><div class="card" style="padding:0; background:#1E2329;">
+  <div style="padding:10px 14px; border-bottom:1px solid #1A1F25; display:flex; align-items:center; gap:10px;">
+    <span style="font-family:var(--font-display); font-weight:700; font-size:12px; letter-spacing:0.18em; text-transform:uppercase; color:#949594;">QUERY · untitled</span>
+    <span class="badge badge-gray">DRAFT</span>
+    <span style="margin-left:auto; font-family:var(--font-mono); font-size:11px; color:#949594;">142 ms · 1,284 rows</span>
+    <button class="btn btn-run btn-sm">Run ⌘↵</button>
+  </div>
+  <div style="display:flex; font-family:var(--font-mono); font-size:13px; line-height:1.6;">
+    <div style="padding:14px 10px; color:#5C636C; text-align:right; user-select:none; min-width:36px; border-right:1px solid #1A1F25;">
+      1<br>2<br>3<br>4<br>5<br>6
+    </div>
+    <div style="padding:14px 16px; color:#E4E5E6; flex:1;">
+      <div><span style="color:#A32638;">SELECT</span> block_number, <span style="color:#A32638;">SUM</span>(amount_usd) <span style="color:#A32638;">AS</span> vol_usd</div>
+      <div><span style="color:#A32638;">FROM</span>   uniswap_v3.swaps</div>
+      <div><span style="color:#A32638;">WHERE</span>  pool = <span style="color:#EBC73B;">'0x88e6cFF…5640'</span>  <span style="color:#949594;">-- USDC/WETH 0.05%</span></div>
+      <div>&nbsp;&nbsp;<span style="color:#A32638;">AND</span>    block_timestamp &gt; <span style="color:#A32638;">NOW</span>() - <span style="color:#EBC73B;">INTERVAL '24 hours'</span></div>
+      <div><span style="color:#A32638;">GROUP BY</span> 1</div>
+      <div><span style="color:#A32638;">ORDER BY</span> 1 <span style="color:#A32638;">DESC</span>;</div>
+    </div>
+  </div>
+</div></body></html>

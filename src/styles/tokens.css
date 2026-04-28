@@ -1,0 +1,344 @@
+/* =============================================================
+   DSC Design System — colors_and_type.css
+   DeFi Statistics Center · Stevens Institute of Technology
+   ------------------------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Saira+Extra+Condensed:wght@400;500;600;700;800&family=Bitter:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+  /* ---- Brand colors (exact tokens from brief) ---- */
+  --stevens-maroon:       #A32638;   /* primary, live-site value */
+  --stevens-maroon-alt:   #9D1535;   /* brand-guide alt */
+  --stevens-gold:         #EBC73B;   /* accent, RUN button, gold underline */
+  --charcoal:             #363D45;   /* dark UI surface */
+  --editor-bg:            #1E2329;   /* SQL editor / deepest surface */
+  --off-white:            #E4E5E6;   /* surface / body text on dark */
+  --white:                #FFFFFE;
+  --gray-2:               #949594;   /* secondary gray, comments, meta */
+  --black:                #000000;
+
+  /* ---- Derived tints (used in hover/selection states) ---- */
+  --maroon-18:            rgba(163, 38, 56, 0.18);   /* schema row hover */
+  --maroon-08:            rgba(163, 38, 56, 0.08);
+  --gold-20:              rgba(235, 199, 59, 0.20);
+  --charcoal-tint:        #2C3239;                   /* slightly darker than charcoal */
+  --charcoal-light:       #444B54;                   /* row separator */
+  --hairline:             #1A1F25;                   /* hairline divider on dark */
+  --hairline-light:       #C9CACB;                   /* hairline on light surface */
+
+  /* ---- Semantic foreground / background ---- */
+  --bg:                   var(--charcoal);
+  --bg-deep:              var(--editor-bg);
+  --bg-surface:           var(--off-white);
+  --fg:                   var(--off-white);
+  --fg-muted:             var(--gray-2);
+  --fg-on-light:          var(--charcoal);
+  --fg-on-light-muted:    #5B6168;
+  --accent:               var(--stevens-gold);
+  --primary:              var(--stevens-maroon);
+
+  /* ---- Status / data-viz semantic ---- */
+  --pos:                  #5B8C3E;   /* gain / confirmed (muted forest) */
+  --neg:                  var(--stevens-maroon);
+  --warn:                 var(--stevens-gold);
+  --info:                 #4A6E8A;   /* muted slate-blue, only when needed */
+
+  /* ---- Chart series order (per brief) ---- */
+  --series-1: var(--stevens-maroon);
+  --series-2: var(--charcoal);
+  --series-3: var(--stevens-gold);
+  --series-4: var(--gray-2);
+  --series-5: #6B7480;
+  --series-6: #C28B8E;
+
+  /* ---- Syntax highlight (SQL editor) ---- */
+  --syn-keyword: var(--stevens-maroon);
+  --syn-string:  var(--stevens-gold);
+  --syn-comment: var(--gray-2);
+  --syn-number:  #C9A86A;
+  --syn-fn:      #D8DADC;
+  --syn-ident:   var(--off-white);
+
+  /* ---- Type families ---- */
+  --font-display: "Saira Extra Condensed", "Oswald", "Arial Narrow", sans-serif;
+  --font-body:    "Bitter", "Source Serif Pro", Georgia, serif;
+  --font-mono:    "JetBrains Mono", "IBM Plex Mono", ui-monospace, Menlo, monospace;
+
+  /* ---- Type scale (Bloomberg-density: tight, dense) ---- */
+  --fs-12: 12px;
+  --fs-13: 13px;
+  --fs-14: 14px;
+  --fs-16: 16px;
+  --fs-18: 18px;
+  --fs-22: 22px;
+  --fs-28: 28px;
+  --fs-36: 36px;
+  --fs-48: 48px;
+  --fs-64: 64px;
+
+  /* ---- Line-heights ---- */
+  --lh-tight: 1.05;
+  --lh-snug:  1.2;
+  --lh-body:  1.45;
+  --lh-loose: 1.6;
+
+  /* ---- Spacing (4px base) ---- */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-10: 40px;
+  --s-12: 48px;
+  --s-16: 64px;
+
+  /* ---- Borders (NO radius — hard edges everywhere) ---- */
+  --radius: 0;
+  --bw-1: 1px;
+  --bw-2: 2px;
+  --bw-3: 3px;
+  --bw-4: 4px;
+  --border-on-dark:  #1A1F25;
+  --border-on-light: #BFC1C3;
+
+  /* ---- Layout chrome ---- */
+  --topbar-h: 56px;
+  --gold-rule: 4px;          /* gold underline accent on brand strip */
+  --tab-h: 36px;
+  --row-h: 28px;             /* table / schema row height (dense) */
+}
+
+/* =============================================================
+   Base resets
+   ------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--fs-14);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* =============================================================
+   Semantic typography
+   ------------------------------------------------------------- */
+.h-display, h1, .h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-48);
+  line-height: var(--lh-tight);
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+h2, .h2 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-28);
+  line-height: var(--lh-snug);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+h3, .h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-22);
+  line-height: var(--lh-snug);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-12);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.wordmark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-22);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--white);
+}
+
+p, .body {
+  font-family: var(--font-body);
+  font-size: var(--fs-14);
+  line-height: var(--lh-body);
+  margin: 0;
+}
+
+.body-lg { font-size: var(--fs-16); line-height: var(--lh-body); }
+.body-sm { font-size: var(--fs-13); line-height: var(--lh-body); }
+
+.meta {
+  font-family: var(--font-body);
+  font-size: var(--fs-12);
+  color: var(--fg-muted);
+  font-style: italic;
+}
+
+code, .code, pre, .mono {
+  font-family: var(--font-mono);
+  font-size: var(--fs-13);
+  line-height: var(--lh-body);
+}
+
+.num, .tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* =============================================================
+   Buttons (square, hard-edge, Saira uppercase)
+   ------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  height: 32px;
+  padding: 0 var(--s-4);
+  border: var(--bw-1) solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: var(--fg);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-13);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 80ms linear, color 80ms linear;
+}
+.btn:focus-visible { outline: 2px solid var(--stevens-gold); outline-offset: 0; }
+
+.btn-primary { background: var(--stevens-maroon); color: var(--white); }
+.btn-primary:hover { background: #8E1F31; }
+.btn-primary:active { background: #7A1A2A; }
+
+.btn-run { background: var(--stevens-gold); color: var(--black); }
+.btn-run:hover { background: #D8B62E; }
+.btn-run:active { background: #C2A323; }
+
+.btn-ghost { background: transparent; color: var(--fg); border-color: #4D545C; }
+.btn-ghost:hover { background: #2C3239; }
+
+.btn-sm { height: 24px; padding: 0 var(--s-3); font-size: var(--fs-12); }
+.btn-lg { height: 40px; padding: 0 var(--s-5); font-size: var(--fs-14); }
+
+/* =============================================================
+   Form fields
+   ------------------------------------------------------------- */
+.input, .select {
+  height: 28px;
+  padding: 0 var(--s-3);
+  background: var(--editor-bg);
+  color: var(--fg);
+  border: var(--bw-1) solid var(--charcoal-light);
+  border-radius: 0;
+  font-family: var(--font-body);
+  font-size: var(--fs-13);
+}
+.input:focus { outline: none; border-color: var(--stevens-gold); }
+
+/* =============================================================
+   Cards / panels (NO radius, NO shadow)
+   ------------------------------------------------------------- */
+.panel {
+  background: var(--charcoal);
+  border: var(--bw-1) solid var(--hairline);
+  border-radius: 0;
+}
+.panel-light {
+  background: var(--off-white);
+  color: var(--charcoal);
+  border: var(--bw-1) solid var(--hairline-light);
+  border-radius: 0;
+}
+
+/* =============================================================
+   Tables (dense, journal-style)
+   ------------------------------------------------------------- */
+.tbl {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-body);
+  font-size: var(--fs-13);
+}
+.tbl thead th {
+  text-align: left;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: var(--fs-12);
+  background: var(--off-white);
+  color: var(--charcoal);
+  padding: var(--s-2) var(--s-3);
+  border-bottom: var(--bw-2) solid var(--stevens-maroon);
+}
+.tbl tbody td {
+  padding: var(--s-2) var(--s-3);
+  border-bottom: 1px solid var(--hairline-light);
+  color: var(--charcoal);
+  height: var(--row-h);
+}
+.tbl tbody tr:hover td { background: #F2F2F3; }
+
+/* =============================================================
+   Badges
+   ------------------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 var(--s-2);
+  padding-right: calc(var(--s-2) + 2px);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 1px solid currentColor;
+  background: transparent;
+  border-radius: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.badge-maroon { color: #E25A6E; }  /* maroon-tint for AA contrast on dark surfaces */
+.badge-gold   { color: var(--stevens-gold);   background: var(--editor-bg); }
+.badge-gray   { color: var(--gray-2); }
+.badge-solid-maroon { background: var(--stevens-maroon); color: var(--white); border-color: transparent; }
+.badge-solid-gold   { background: var(--stevens-gold);   color: var(--black); border-color: transparent; }
+
+/* =============================================================
+   Brand strip (top bar)
+   ------------------------------------------------------------- */
+.brand-strip {
+  height: var(--topbar-h);
+  background: var(--stevens-maroon);
+  color: var(--white);
+  border-bottom: var(--gold-rule) solid var(--stevens-gold);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--s-5);
+}

@@ -1,0 +1,67 @@
+/* Preview-card base — shared by every card in /preview.
+   Cards are ~700 px wide, variable height. Stevens dark UI. */
+@import url('../colors_and_type.css');
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--charcoal);
+  color: var(--off-white);
+  font-family: var(--font-body);
+}
+
+.card {
+  width: 700px;
+  padding: 20px;
+  background: var(--charcoal);
+  color: var(--off-white);
+  box-sizing: border-box;
+}
+
+.card-light {
+  background: var(--off-white);
+  color: var(--charcoal);
+}
+
+.row { display: flex; gap: 12px; align-items: stretch; }
+.col { display: flex; flex-direction: column; gap: 12px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.grid-6 { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+
+.swatch {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 96px;
+  padding: 10px 12px;
+  border: 1px solid #1A1F25;
+}
+.swatch .name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.swatch .hex {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  opacity: 0.85;
+}
+.swatch.on-light { color: var(--charcoal); }
+.swatch.on-light .name, .swatch.on-light .hex { color: var(--charcoal); }
+.swatch.on-dark  { color: var(--off-white); }
+
+.label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gray-2);
+  margin-bottom: 8px;
+  display: block;
+}
