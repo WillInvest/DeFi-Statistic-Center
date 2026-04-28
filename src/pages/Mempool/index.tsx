@@ -82,7 +82,7 @@ export function Mempool() {
 
   return (
     <div className="mempool" data-screen-label="Mempool">
-      <BrandStrip activeNav="Mempool" block={block.toLocaleString()} />
+      <BrandStrip activeNav="Mempool" />
       <MempoolHeader block={block} gas={32} baseFee={28} pending={pending} gasTrend="↑ 4 gwei · 1m" />
       <div className="mempool__body">
         <FeeGrid buckets={INITIAL_BUCKETS} />

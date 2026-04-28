@@ -34,10 +34,15 @@ export function highlight(sql: string): ReactNode[] {
       i = end;
       continue;
     }
+    // SQL string literal — '' inside the literal is an escaped single quote.
     if (c === "'") {
       let j = i + 1;
       while (j < sql.length) {
-        if (sql[j] === "'" && sql[j - 1] !== "\\") {
+        if (sql[j] === "'") {
+          if (sql[j + 1] === "'") {
+            j += 2;
+            continue;
+          }
           j++;
           break;
         }
@@ -47,11 +52,22 @@ export function highlight(sql: string): ReactNode[] {
       i = j;
       continue;
     }
+    // SQL quoted identifier — "" inside the identifier is an escaped double quote.
     if (c === '"') {
       let j = i + 1;
-      while (j < sql.length && sql[j] !== '"') j++;
-      push("tok-ident", sql.slice(i, j + 1));
-      i = j + 1;
+      while (j < sql.length) {
+        if (sql[j] === '"') {
+          if (sql[j + 1] === '"') {
+            j += 2;
+            continue;
+          }
+          j++;
+          break;
+        }
+        j++;
+      }
+      push("tok-ident", sql.slice(i, j));
+      i = j;
       continue;
     }
     if (/\d/.test(c)) {

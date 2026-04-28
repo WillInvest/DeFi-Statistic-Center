@@ -15,9 +15,75 @@ const TOP_CLAUSES = [
   "RETURNING",
 ];
 
+const PLACEHOLDER_RE = /__SQLLIT_\d+__/;
+
+type Mask = { masked: string; literals: string[] };
+
+// Walk the raw SQL once and replace string literals, quoted identifiers, line
+// comments, and block comments with opaque `__SQLLIT_<n>__` placeholders. The
+// placeholder contains no whitespace and no SQL keywords, so regex-based
+// rewrites below cannot mutate literal contents. Honors SQL's `''` and `""`
+// escape conventions for adjacent quotes.
+function maskLiterals(sql: string): Mask {
+  const literals: string[] = [];
+  let masked = "";
+  let i = 0;
+  while (i < sql.length) {
+    const c = sql[i];
+
+    if (c === "-" && sql[i + 1] === "-") {
+      const nl = sql.indexOf("\n", i);
+      const end = nl < 0 ? sql.length : nl;
+      masked += emit(literals, sql.slice(i, end));
+      i = end;
+      continue;
+    }
+    if (c === "/" && sql[i + 1] === "*") {
+      const close = sql.indexOf("*/", i + 2);
+      const end = close < 0 ? sql.length : close + 2;
+      masked += emit(literals, sql.slice(i, end));
+      i = end;
+      continue;
+    }
+    if (c === "'" || c === '"') {
+      const q = c;
+      let j = i + 1;
+      while (j < sql.length) {
+        if (sql[j] === q) {
+          if (sql[j + 1] === q) {
+            j += 2;
+            continue;
+          }
+          j++;
+          break;
+        }
+        j++;
+      }
+      masked += emit(literals, sql.slice(i, j));
+      i = j;
+      continue;
+    }
+
+    masked += c;
+    i++;
+  }
+  return { masked, literals };
+}
+
+function emit(literals: string[], text: string): string {
+  const idx = literals.length;
+  literals.push(text);
+  return `__SQLLIT_${idx}__`;
+}
+
+function unmask(s: string, literals: string[]): string {
+  return s.replace(/__SQLLIT_(\d+)__/g, (_m, n) => literals[parseInt(n, 10)]);
+}
+
 export function formatSQL(input: string): string {
   if (!input) return input;
-  let s = input.trim().replace(/\s+/g, " ");
+  const { masked, literals } = maskLiterals(input);
+  let s = masked.trim().replace(/\s+/g, " ");
 
   for (const c of TOP_CLAUSES) {
     const re = new RegExp(`\\b${c.replace(/ /g, "\\s+")}\\b`, "gi");
@@ -60,7 +126,8 @@ export function formatSQL(input: string): string {
     }
   }
 
-  return out.join("\n").replace(/;?\s*$/, ";");
+  const formatted = out.join("\n").replace(/;?\s*$/, ";");
+  return unmask(formatted, literals);
 }
 
 function matchHead(line: string): string | null {
@@ -92,25 +159,15 @@ function matchHead(line: string): string | null {
   return null;
 }
 
+// `s` is the masked-and-trimmed body of a clause; literal contents live in
+// `__SQLLIT_<n>__` placeholders that contain no commas/AND/OR/parens, so
+// paren-depth tracking can be done with a simple counter.
 function splitTopLevel(s: string, sep: string): string[] {
   const out: string[] = [];
   let depth = 0;
   let buf = "";
-  let inStr = false;
-  let q = "";
   for (let i = 0; i < s.length; i++) {
     const c = s[i];
-    if (inStr) {
-      buf += c;
-      if (c === q && s[i - 1] !== "\\") inStr = false;
-      continue;
-    }
-    if (c === "'" || c === '"') {
-      inStr = true;
-      q = c;
-      buf += c;
-      continue;
-    }
     if (c === "(") depth++;
     else if (c === ")") depth--;
     if (c === sep && depth === 0) {
@@ -128,24 +185,9 @@ function splitAndOr(s: string): string[] {
   const out: string[] = [];
   let depth = 0;
   let buf = "";
-  let inStr = false;
-  let q = "";
   let i = 0;
   while (i < s.length) {
     const c = s[i];
-    if (inStr) {
-      buf += c;
-      if (c === q && s[i - 1] !== "\\") inStr = false;
-      i++;
-      continue;
-    }
-    if (c === "'" || c === '"') {
-      inStr = true;
-      q = c;
-      buf += c;
-      i++;
-      continue;
-    }
     if (c === "(") depth++;
     else if (c === ")") depth--;
     if (depth === 0 && (i === 0 || /\s/.test(s[i - 1]))) {
@@ -164,3 +206,5 @@ function splitAndOr(s: string): string[] {
   if (buf.trim()) out.push(buf.trim());
   return out;
 }
+
+export const __test = { maskLiterals, unmask, PLACEHOLDER_RE };
