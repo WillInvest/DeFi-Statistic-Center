@@ -6,13 +6,12 @@
 
 **An open data workbench for the programmable economy.**
 
-Ask in plain English. Get runnable SQL over **12 live DeFi protocols + Ethereum chain state**.
+Ask in plain English. Get runnable SQL over **8 DeFi protocols + Ethereum chain state**, surfaced as 12 live schemas in one workbench.
 
 [![Stevens Institute of Technology](https://img.shields.io/badge/Stevens-Institute%20of%20Technology-A32638?style=flat-square)](https://www.stevens.edu)
-[![License: MIT](https://img.shields.io/badge/License-MIT-EBC73B?style=flat-square)](LICENSE)
 [![Built with React 19](https://img.shields.io/badge/React-19-363D45?style=flat-square&logo=react&logoColor=61DAFB)](https://react.dev)
 [![Vite 8](https://img.shields.io/badge/Vite-8-363D45?style=flat-square&logo=vite&logoColor=646CFF)](https://vitejs.dev)
-[![Postgres](https://img.shields.io/badge/Postgres-23%20GB-A32638?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org)
+[![Postgres](https://img.shields.io/badge/Postgres-Warehouse-A32638?style=flat-square&logo=postgresql&logoColor=white)](https://www.postgresql.org)
 
 </div>
 
@@ -30,20 +29,20 @@ The **Agent Query** pane collapses that into a sentence:
 > what is the top most block with most swaps
 ```
 
-The agent reads the **full live schema** of all 12 protocols, picks the right tables, writes a UNION across them, and hands you a **runnable, syntax-highlighted, editable SQL block**:
+The agent reads the **full live schema** of every protocol, picks the right tables, writes a UNION across them, and hands you a **runnable, syntax-highlighted, editable SQL block** (using the schemas exposed in [`src/lib/schema.ts`](./src/lib/schema.ts)):
 
 ```sql
 SELECT
-  block,
+  block_number,
   COUNT(*) AS swap_count
 FROM (
-  SELECT block FROM uniswap_v3.swap_events
+  SELECT block_number FROM uniswap_v3.swaps
   UNION ALL
-  SELECT block FROM curve.exchange_events
+  SELECT block_number FROM curve.exchanges
   UNION ALL
-  SELECT block FROM balancer_v2.swap_events
+  SELECT block_number FROM balancer_v2.swaps
 ) AS all_swaps
-GROUP BY block
+GROUP BY block_number
 ORDER BY swap_count DESC
 LIMIT 1;
 ```
@@ -54,9 +53,7 @@ This is what we mean by a *programmable economy*: the on-chain ledger is already
 
 <div align="center">
 
-<sub>↓ <em>watch the agent build this query in real time</em> ↓</sub>
-
-<video src="./public/demo-agentic-query.mp4" width="800" controls playsinline></video>
+<sub>▶ <strong><a href="./public/demo-agentic-query.mp4">Watch the agent build this query in real time (MP4 demo, 1 min)</a></strong></sub>
 
 </div>
 
@@ -64,9 +61,9 @@ This is what we mean by a *programmable economy*: the on-chain ledger is already
 
 ## ✦ What's covered
 
-**12 protocols, 32 indexed tables, ~23 GB of normalized event data**, served from a Postgres warehouse on the Stevens campus.
+**12 schemas — 8 DeFi protocols + 4 infrastructure / native datasets — over 30 indexed tables**, served from a Postgres warehouse on the Stevens campus. See [`src/pages/Workbench/schemaGuide.ts`](./src/pages/Workbench/schemaGuide.ts) for the canonical list.
 
-| Category          | Protocols / Schemas                                           |
+| Category          | Schemas                                                       |
 | ----------------- | ------------------------------------------------------------- |
 | 💱 Exchanges       | **Uniswap V3** · **Curve** · **Balancer V2**                  |
 | 🏦 Lending         | **Aave V2** · **Aave V3** · **Compound V3** · **Morpho** · **Spark** |
@@ -145,8 +142,8 @@ The same workbench that lets a finance student ask *"show me the biggest WETH/US
 | Layer       | Tech                                                                              |
 | ----------- | --------------------------------------------------------------------------------- |
 | Frontend    | React 19 · TypeScript · Vite 8 · React Router 7 · custom CSS (Stevens design system) |
-| API         | Node + Express, prompt-cached LLM calls, streaming results                        |
-| Warehouse   | Postgres 14, 23 GB indexed event tables                                            |
+| API         | Node service (`/api/nl`, `/api/query`, `/api/schema`, `/api/node`)                  |
+| Warehouse   | Postgres, 12 schemas of decoded event data                                         |
 | Source data | RETH archive node + Lighthouse beacon, decoded via per-protocol pipelines          |
 
 ---
@@ -174,8 +171,8 @@ pnpm lint        # ESLint pass
 ## ✦ Status & roadmap
 
 - [x] Workbench — Schema Tree, Query Builder, Agent Query, Results
-- [x] Mempool live tx feed (Stevens campus RETH node, ~24 ms latency)
-- [x] 12 protocols indexed (~23 GB)
+- [x] Mempool live tx feed (Stevens campus RETH node)
+- [x] 12 schemas indexed
 - [ ] Saved queries + share links
 - [ ] Notebook export (Polars / Pandas)
 - [ ] Cross-chain (L2s, Solana)
@@ -203,6 +200,6 @@ PRs and issues welcome.
 
 **Stevens Maroon** `#A32638` · **Charcoal** `#363D45` · **Gold** `#EBC73B`
 
-<sub>Released under the MIT License · 2026</sub>
+<sub>© 2026 Stevens Institute of Technology Financial Systems Lab</sub>
 
 </div>
