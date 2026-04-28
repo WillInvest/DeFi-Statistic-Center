@@ -390,6 +390,25 @@ code, .code, pre, .mono {
   color: var(--white);
   border-bottom-color: var(--white);
 }
+.brand-strip__nav-link--todo {
+  color: rgba(255, 255, 255, 0.45);
+  cursor: not-allowed;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.brand-strip__nav-link--todo:hover {
+  color: rgba(255, 255, 255, 0.45);
+  border-bottom-color: transparent;
+}
+.brand-strip__nav-todo {
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  padding: 1px 4px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.55);
+  font-weight: 700;
+}
 .brand-strip__right {
   margin-left: auto;
   display: flex;
@@ -410,10 +429,33 @@ code, .code, pre, .mono {
   color: var(--stevens-maroon);
   border: none;
 }
+.brand-strip__live-badge--live {
+  background: var(--white);
+  color: var(--stevens-maroon);
+}
+.brand-strip__live-badge--syncing {
+  background: var(--stevens-gold);
+  color: var(--charcoal);
+  animation: dsc-syncing-pulse 1.6s ease-in-out infinite;
+}
+.brand-strip__live-badge--unknown {
+  background: rgba(255, 255, 255, 0.15);
+  color: rgba(255, 255, 255, 0.7);
+}
+@keyframes dsc-syncing-pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
 .brand-strip__block {
   font-family: var(--font-mono);
   font-size: 11px;
   color: rgba(255, 255, 255, 0.85);
+}
+.brand-strip__block-sep {
+  color: rgba(255, 255, 255, 0.45);
+}
+.brand-strip__block-global {
+  color: rgba(255, 255, 255, 0.55);
 }
 .brand-strip__avatar {
   width: 28px;
