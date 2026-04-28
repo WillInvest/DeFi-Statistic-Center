@@ -335,10 +335,254 @@ code, .code, pre, .mono {
    ------------------------------------------------------------- */
 .brand-strip {
   height: var(--topbar-h);
+  min-height: var(--topbar-h);
+  max-height: var(--topbar-h);
   background: var(--stevens-maroon);
   color: var(--white);
   border-bottom: var(--gold-rule) solid var(--stevens-gold);
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   padding: 0 var(--s-5);
+  gap: var(--s-5);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.brand-strip__wordmark {
+  color: var(--white);
+  white-space: nowrap;
+  font-size: 18px;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+.brand-strip__wordmark:hover { opacity: 0.9; }
+.brand-strip__divider {
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 255, 255, 0.30);
+  flex-shrink: 0;
+}
+.brand-strip__nav {
+  display: flex;
+  gap: var(--s-4);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.brand-strip__nav-link {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 80ms linear, border-color 80ms linear;
+}
+.brand-strip__nav-link:hover {
+  color: var(--white);
+  border-bottom-color: rgba(255, 255, 255, 0.4);
+}
+.brand-strip__nav-link--active {
+  font-weight: 700;
+  color: var(--white);
+  border-bottom-color: var(--white);
+}
+.brand-strip__right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+}
+.brand-strip__live-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 var(--s-2);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--white);
+  color: var(--stevens-maroon);
+  border: none;
+}
+.brand-strip__block {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.85);
+}
+.brand-strip__avatar {
+  width: 28px;
+  height: 28px;
+  background: var(--white);
+  color: var(--stevens-maroon);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 13px;
+}
+
+/* =============================================================
+   Status bar (bottom)
+   ------------------------------------------------------------- */
+.status-bar {
+  height: 28px;
+  min-height: 28px;
+  max-height: 28px;
+  background: var(--editor-bg);
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding: 0 14px;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.status-bar__item {
+  flex-shrink: 0;
+}
+.status-bar__item--node {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.status-bar__dot {
+  width: 6px;
+  height: 6px;
+  background: var(--pos);
+  flex-shrink: 0;
+}
+.status-bar__sep { flex-shrink: 0; }
+.status-bar__right {
+  margin-left: auto;
+  flex-shrink: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.status-bar__motto {
+  font-style: italic;
+  color: #5C636C;
+  flex-shrink: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* =============================================================
+   Page shell utilities
+   ------------------------------------------------------------- */
+.page-shell {
+  display: grid;
+  height: 100vh;
+  background: var(--editor-bg);
+  color: var(--fg);
+}
+.page-shell--workbench { grid-template-rows: auto 1fr 28px; }
+.page-shell--mempool   { grid-template-rows: auto auto 1fr 28px; }
+
+/* =============================================================
+   Pane headers (shared pattern)
+   ------------------------------------------------------------- */
+.pane-header {
+  height: var(--tab-h);
+  background: var(--editor-bg);
+  border-bottom: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.pane-header--light {
+  background: var(--white);
+  border-bottom-color: var(--border-on-light);
+}
+.pane-header__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--white);
+  border-bottom: 2px solid var(--stevens-gold);
+  padding-bottom: 2px;
+}
+.pane-header--light .pane-header__title {
+  color: var(--charcoal);
+  border-bottom-color: var(--stevens-maroon);
+}
+.pane-header__meta {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--fg-muted);
+  white-space: nowrap;
+}
+.pane-header--light .pane-header__meta {
+  color: var(--fg-on-light-muted);
+}
+
+/* =============================================================
+   Toggle group (Table/Chart, filter pills)
+   ------------------------------------------------------------- */
+.toggle-group {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--charcoal-light);
+}
+.toggle-group--light {
+  border-color: var(--border-on-light);
+}
+.toggle-group__item {
+  padding: 0 12px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+  border: none;
+  transition: background 80ms linear, color 80ms linear;
+}
+.toggle-group__item:hover {
+  background: var(--maroon-08);
+}
+.toggle-group__item--active {
+  background: var(--charcoal);
+  color: var(--white);
+}
+.toggle-group--light .toggle-group__item--active {
+  background: var(--charcoal);
+  color: var(--white);
+}
+.toggle-group--light .toggle-group__item:hover:not(.toggle-group__item--active) {
+  background: #F2F2F3;
+}
+
+/* =============================================================
+   Highlight flash for new rows (mempool)
+   ------------------------------------------------------------- */
+@keyframes row-flash {
+  0%   { background: var(--maroon-18); }
+  100% { background: transparent; }
+}
+.row-flash {
+  animation: row-flash 1.2s ease-out forwards;
 }

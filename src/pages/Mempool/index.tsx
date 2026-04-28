@@ -4,6 +4,7 @@ import { StatusBar } from '../../components/StatusBar';
 import { MempoolHeader } from './MempoolHeader';
 import { FeeGrid, type FeeBucket } from './FeeGrid';
 import { TxList, type Tx, type TxFilter, type TxType, type TxStatus } from './TxList';
+import './Mempool.css';
 
 const TYPES: TxType[] = ['SWAP', 'ADD LIQ', 'REMOVE LIQ', 'XFER', 'CONTRACT'];
 const ADDRS = [
@@ -80,19 +81,10 @@ export function Mempool() {
   const visible = filter === 'ALL' ? rows : rows.filter((r) => r.type === filter);
 
   return (
-    <div
-      data-screen-label="Mempool"
-      style={{
-        display: 'grid',
-        gridTemplateRows: '56px auto 1fr 28px',
-        height: '100vh',
-        background: '#1E2329',
-        color: '#E4E5E6',
-      }}
-    >
+    <div className="mempool" data-screen-label="Mempool">
       <BrandStrip activeNav="Mempool" block={block.toLocaleString()} />
       <MempoolHeader block={block} gas={32} baseFee={28} pending={pending} gasTrend="↑ 4 gwei · 1m" />
-      <div style={{ display: 'grid', gridTemplateColumns: '420px 1fr', minHeight: 0 }}>
+      <div className="mempool__body">
         <FeeGrid buckets={INITIAL_BUCKETS} />
         <TxList rows={visible} filter={filter} onFilter={setFilter} />
       </div>

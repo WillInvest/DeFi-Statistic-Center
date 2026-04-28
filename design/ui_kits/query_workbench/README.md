@@ -1,6 +1,6 @@
-# DSC Query Workbench — UI Kit
+# DSC Query — UI Kit
 
-Three-pane workbench: schema tree (left) · query editor (middle, with SQL / Builder / Chat tabs) · results table + chart (right). Top brand strip + footer status bar.
+Three-pane query UI: schema tree (left) · query editor (middle, with SQL / Builder / Chat tabs) · results table + chart (right). Top brand strip + footer status bar.
 
 ## Files
 - `index.html` — interactive demo, full window
