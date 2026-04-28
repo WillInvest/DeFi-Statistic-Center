@@ -81,7 +81,7 @@ This is what we mean by a *programmable economy*: the on-chain ledger is already
 <td width="33%" valign="top">
 
 ### 🌳 Schema Tree
-Browse all 12 protocols by category. Click a table to see column names, types, and human-readable descriptions sourced from the protocol's own docs. No more guessing whether `amount0In` is wei or scaled.
+Browse all 12 schemas by category. Click a table to see column names, types, and human-readable descriptions sourced from the protocol's own docs. No more guessing whether `amount0In` is wei or scaled.
 
 </td>
 <td width="33%" valign="top">
@@ -125,13 +125,13 @@ The same workbench that lets a finance student ask *"show me the biggest WETH/US
                                   │  /api/nl    /api/query
                      ┌────────────┴─────────────────────────┐
                      │       Node API ( :3001 )             │
-                     │   NL → SQL (Claude / MiniMax)        │
+                     │   NL → SQL  (MiniMax M2.7)           │
                      │   schema introspection cache         │
                      └────────────┬─────────────────────────┘
                                   │ Postgres protocol
                      ┌────────────┴─────────────────────────┐
                      │  Postgres @ fscresearchvm89          │
-                     │  12 schemas · 32 tables · 23 GB      │
+                     │  12 schemas · 30+ indexed tables     │
                      └────────────┬─────────────────────────┘
                                   │  reth+lighthouse
                      ┌────────────┴─────────────────────────┐
