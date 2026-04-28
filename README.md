@@ -84,7 +84,7 @@ Visual SOURCE → SELECT → WHERE → GROUP BY → ORDER BY composer for users 
 
 ### 🤖 Agent Query
 
-Plain-English in, runnable SQL out. The agent has the **full schema in context** so it never hallucinates a column. Keeps multi-turn history so you can refine: *"now group by hour"*, *"only WETH pools"*.
+Plain-English in, runnable SQL out. The agent has the **full schema in context** so it never hallucinates a column. Each query is a fresh prompt — re-ask with more detail and the agent re-plans against the same schema (e.g. *"now group by hour"*, *"only WETH pools"*).
 
 ---
 
