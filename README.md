@@ -1,73 +1,193 @@
-# React + TypeScript + Vite
+<p align="center">
+  <img src="./public/dsc-coin.png" alt="DSC Coin" width="120" />
+</p>
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<h1 align="center">DeFi Statistics Center</h1>
 
-Currently, two official plugins are available:
+<p align="center"><strong>An open data workbench for the programmable economy.</strong></p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+<p align="center">
+  Ask in plain English. Get runnable SQL over <strong>8 DeFi protocols + Ethereum chain state</strong>, surfaced as 12 live schemas in one workbench.
+</p>
 
-## React Compiler
+<p align="center">
+  <a href="https://www.stevens.edu"><img src="https://img.shields.io/badge/Stevens-Institute%20of%20Technology-A32638?style=flat-square" alt="Stevens Institute of Technology"></a>
+  <a href="https://react.dev"><img src="https://img.shields.io/badge/React-19-363D45?style=flat-square&logo=react&logoColor=61DAFB" alt="React 19"></a>
+  <a href="https://vitejs.dev"><img src="https://img.shields.io/badge/Vite-8-363D45?style=flat-square&logo=vite&logoColor=646CFF" alt="Vite 8"></a>
+  <a href="https://www.postgresql.org"><img src="https://img.shields.io/badge/Postgres-Warehouse-A32638?style=flat-square&logo=postgresql&logoColor=white" alt="Postgres warehouse"></a>
+</p>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## ✦ Agent Query for the Programmable Economy
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+> **The main selling point.** Ask the question. Don't write the SQL.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+DeFi data is fragmented. Each protocol publishes its own subgraph, its own decoder, its own dashboard. To answer a single research question — *"What block had the most swap activity across the major DEXs?"* — you stitch three subgraphs, normalize three schemas, and write three CTEs.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+The **Agent Query** pane collapses that into a sentence:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+> what is the top most block with most swaps
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The agent reads the **full live schema** of every protocol, picks the right tables, writes a UNION across them, and hands you a **runnable, syntax-highlighted, editable SQL block**. Below is an illustrative shape — table names follow the live Postgres warehouse at runtime; the column names mirror the offline fallback in [`src/lib/schema.ts`](./src/lib/schema.ts):
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```sql
+SELECT
+  block_number,
+  COUNT(*) AS swap_count
+FROM (
+  SELECT block_number FROM uniswap_v3.swaps
+  UNION ALL
+  SELECT block_number FROM curve.exchanges
+  UNION ALL
+  SELECT block_number FROM balancer_v2.swaps
+) AS all_swaps
+GROUP BY block_number
+ORDER BY swap_count DESC
+LIMIT 1;
 ```
+
+Click **Run ▶** — get answers, not boilerplate.
+
+This is what we mean by a *programmable economy*: the on-chain ledger is already a database. We're just giving researchers, students, and traders a query layer that **speaks their language**.
+
+<p align="center"><sub>▶ <strong><a href="./public/demo-agentic-query.mp4">Watch the agent build this query in real time (MP4 demo, ~40 s)</a></strong></sub></p>
+
+---
+
+## ✦ What's covered
+
+**12 schemas — 8 DeFi protocols + 4 infrastructure / native datasets**, served from a Postgres warehouse on the Stevens campus. The canonical schema list lives in [`src/pages/Workbench/schemaGuide.ts`](./src/pages/Workbench/schemaGuide.ts); the offline fallback shape (table + column names) is in [`src/lib/schema.ts`](./src/lib/schema.ts).
+
+| Category          | Schemas                                                       |
+| ----------------- | ------------------------------------------------------------- |
+| 💱 Exchanges       | **Uniswap V3** · **Curve** · **Balancer V2**                  |
+| 🏦 Lending         | **Aave V2** · **Aave V3** · **Compound V3** · **Morpho** · **Spark** |
+| ⚙️  Infrastructure | **Ethereum** (blocks · transactions · logs · contracts) · **Bridges** · **Tokens** |
+| 🏛️ DSC native      | curated cross-protocol views (also classified under Infrastructure) |
+
+> Most tables are *event-level* — swaps, deposits, borrows, liquidations, bridge transfers — joined back to the canonical Ethereum block stream. State tables (pools, positions, token metadata, blocks, contracts) round out the schema for context. Either way: **provable, replayable, time-travel queries** down to the transaction.
+
+---
+
+## ✦ Three panes, one workbench
+
+### 🌳 Schema Tree
+
+Browse all 12 schemas by category. Column names + types come from `/api/schema` at runtime (or [`src/lib/schema.ts`](./src/lib/schema.ts) as the offline fallback shape). Each schema and table also gets a hand-curated one-line description from [`schemaGuide.ts`](./src/pages/Workbench/schemaGuide.ts) so you can tell at a glance what's in there.
+
+### ✏️ Query Builder
+
+Visual SOURCE → SELECT → WHERE → GROUP BY → ORDER BY composer for users who'd rather click than type. Generates the same SQL the Agent does.
+
+### 🤖 Agent Query
+
+Plain-English in, runnable SQL out. The agent has the **full schema in context** so it never hallucinates a column. Each query is a fresh prompt — re-ask with more detail and the agent re-plans against the same schema (e.g. *"now group by hour"*, *"only WETH pools"*).
+
+---
+
+## ✦ Why this exists
+
+Most DeFi dashboards are **point solutions** — Dune for trader analytics, DefiLlama for TVL, Etherscan for tx-level lookups. None give you a single SQL endpoint with **decoded protocol logic across protocols** that you can drive from a chat interface.
+
+DSC is the layer we wanted to exist for our own research:
+
+- 📈 **Microstructure research** — does a pool's gas-priority pattern change before a CEX dump?
+- 🔬 **Mechanism design** — how does a new fee curve affect realized LVR vs. backtest?
+- 🧠 **Alpha discovery** — find on-chain events that systematically precede price moves.
+
+The same workbench that lets a finance student ask *"show me the biggest WETH/USDC swap of the week"* also lets a researcher ask *"join Aave V3 liquidations against Uniswap V3 swap volume in the same block"* — and get the SQL back in seconds.
+
+---
+
+## ✦ Tech stack
+
+```
+                     ┌──────────────────────────────────────┐
+                     │    Web (Vite 8 + React 19 + TS)      │
+                     │  Workbench · Mempool · Landing       │
+                     └────────────┬─────────────────────────┘
+                                  │  /api/nl    /api/query
+                     ┌────────────┴─────────────────────────┐
+                     │       Node API ( :3001 )             │
+                     │   NL → SQL  (MiniMax M2.7)           │
+                     │   schema introspection cache         │
+                     └────────────┬─────────────────────────┘
+                                  │ Postgres protocol
+                     ┌────────────┴─────────────────────────┐
+                     │  Postgres @ fscresearchvm89          │
+                     │  12 schemas of decoded event data    │
+                     └────────────┬─────────────────────────┘
+                                  │  reth+lighthouse
+                     ┌────────────┴─────────────────────────┐
+                     │  Ethereum archive node (RETH)        │
+                     └──────────────────────────────────────┘
+```
+
+| Layer       | Tech                                                                              |
+| ----------- | --------------------------------------------------------------------------------- |
+| Frontend    | React 19 · TypeScript · Vite 8 · React Router 7 · custom CSS (Stevens design system) |
+| API         | Node service (`/api/nl`, `/api/query`, `/api/schema`, `/api/node`)                  |
+| Warehouse   | Postgres, 12 schemas of decoded event data                                         |
+| Source data | RETH archive node + Lighthouse beacon, decoded via per-protocol pipelines          |
+
+---
+
+## ✦ Quick start
+
+```bash
+git clone https://github.com/WillInvest/DeFi-Statistic-Center.git
+cd DeFi-Statistic-Center
+pnpm install
+pnpm dev
+# → http://localhost:5173
+```
+
+The dev server proxies `/api/*` to a backend at `localhost:3001`. To stand up the warehouse + API yourself, see [`design/HANDOFF-README.md`](./design/HANDOFF-README.md).
+
+```bash
+pnpm build       # type-check + production bundle
+pnpm preview     # serve the production build locally
+pnpm lint        # ESLint pass
+```
+
+---
+
+## ✦ Status & roadmap
+
+- [x] Workbench — Schema Tree, Query Builder, Agent Query, Results
+- [x] Mempool live tx feed (Stevens campus RETH node)
+- [x] 12 schemas indexed
+- [ ] Saved queries + share links
+- [ ] Notebook export (Polars / Pandas)
+- [ ] Cross-chain (L2s, Solana)
+- [ ] Public hosted instance
+
+---
+
+## ✦ Built at Stevens
+
+<p align="center">
+  <img src="./public/stevens-flag.svg" alt="Stevens Institute of Technology" width="80" />
+</p>
+
+<p align="center">
+  This project is part of an ongoing program at the
+  <a href="https://www.stevens.edu"><strong>Stevens Institute of Technology</strong></a>
+  Financial Systems Lab on
+  <strong>on-chain market microstructure and programmable-economy research</strong>.
+</p>
+
+<p align="center">PRs and issues welcome.</p>
+
+---
+
+<p align="center">
+  <strong>Stevens Maroon</strong> <code>#A32638</code> ·
+  <strong>Charcoal</strong> <code>#363D45</code> ·
+  <strong>Gold</strong> <code>#EBC73B</code>
+</p>
+
+<p align="center"><sub>© 2026 Stevens Institute of Technology Financial Systems Lab</sub></p>
