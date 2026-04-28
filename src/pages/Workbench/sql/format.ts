@@ -32,9 +32,16 @@ function maskLiterals(sql: string): Mask {
     const c = sql[i];
 
     if (c === "-" && sql[i + 1] === "-") {
+      // Convert line comments (-- ... <eol>) to block-comment form before
+      // masking. Line comments are line-terminated, but later passes collapse
+      // newlines into single spaces, which would let the comment swallow
+      // whatever text comes next on the formatted line (e.g. a trailing
+      // comma). Block-comment form (/* ... */) is closed and survives any
+      // surrounding whitespace normalization.
       const nl = sql.indexOf("\n", i);
       const end = nl < 0 ? sql.length : nl;
-      masked += emit(literals, sql.slice(i, end));
+      const body = sql.slice(i + 2, end).trim();
+      masked += emit(literals, "/* " + body + " */");
       i = end;
       continue;
     }
